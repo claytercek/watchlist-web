@@ -1,0 +1,19 @@
+* {
+	box-sizing: border-box;
+	font-family: $font-stack;
+	font-smoothing: antialiased;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+
+html {
+	background-color: $bg1;
+	background: linear-gradient($bg1, $bg2);
+	background-attachment: fixed;
+}
+
+main {
+	padding: $space;
+}
