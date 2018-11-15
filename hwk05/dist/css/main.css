@@ -336,9 +336,21 @@ $BASE
   -webkit-text-size-adjust: 100%; }
 
 html {
+  height: 100%; }
+
+body {
+  height: 100%; }
+
+.background {
   background-color: #232979;
   background: linear-gradient(#232979, #c93577);
-  background-attachment: fixed; }
+  background-attachment: fixed;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -5; }
 
 main {
   padding: 16px; }
