@@ -1,6 +1,11 @@
+
+
 article {
-	background-color: $block;
+
 	box-shadow: #04072e78 0 9px 28px -4px;
+	background-color: $block;
+	position: relative;
+	z-index: 1;
 
 	height: 96px;
 	overflow: hidden;
@@ -57,12 +62,12 @@ article {
 
 		.watchData {
 			grid-area: watchData;
+			overflow-x: scroll !important;
 			display: flex;
-
+			
 			a {
-				display: block;
-				flex: 1;
-				overflow: hidden;
+				overflow: visible;
+				display: inline-block;
 				color: $text2;
 				text-decoration: none;
 				text-align: center;
@@ -77,14 +82,16 @@ article {
 
 				h3 {
 					font-size: 0.75rem;
+					width: 100px;
 					font-weight: 300;
 					margin: 0.3rem 0;
+					display: block;
 				}
 			}
 		}
 
-		&.showData {
-			height: 172px;
+		&.showData  {
+			height: 180px;
 		}
 	}
 
@@ -111,4 +118,48 @@ article {
 			}
 		}
 	}
+}
+
+.animateOut {
+	article {
+	transition: all .3s cubic-bezier(.65,.05,.36,1), margin-bottom .3s .1s cubic-bezier(.65,.05,.36,1);
+	height: 0 !important;
+	box-shadow: none;
+	overflow: hidden;
+	margin-bottom: 0;
+	}
+
+	.action {
+		transition: all .1s cubic-bezier(.65,.05,.36,1);
+		opacity: 0;
+
+	}
+}
+
+
+.item--withSwipe {
+	position: relative;
+	// overflow: hidden;
+}
+
+.action {
+	position: absolute;
+	width: 100px;
+	height: 100%;
+	top: 0;
+	border: 0;
+	color: #FFF;
+	outline: none;
+	z-index: 0;
+	background-color: transparent;
+
+	&:first-child::before,&:last-child::before {
+		position: absolute;
+		top: 0;
+		content: '';
+		width: 2000px;
+		height: 100%;
+	}
+	&:first-child { left: 0px; }
+	&:last-child { right: 0px; }
 }

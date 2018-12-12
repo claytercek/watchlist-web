@@ -34,65 +34,17 @@
 	</head>
 	<body>
 		<div class="background"></div>
-		<header><button onclick="routeTo('index.html')" class="cancel">Cancel</button> <input type="text" placeholder="search" /></header>
+		<header>
+			<button onclick="routeTo('index.html')" class="cancel">Cancel</button> 
+			<input id="search" type="text" placeholder="search" oninput="updateInput()"/>
+		</header>
+		<div class="radio-group">
+			<input type="radio" id="movie" name="selector" onclick="updateInput()" checked><label for="movie" onclick="updateInput()">movies</label><input type="radio" id="tv" name="selector" onclick="updateInput()"><label for="tv" onclick="updateInput()">television</label>
+		</div>
 		<main>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
-			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://via.placeholder.com/50x80" alt="Poster" /></div>
-				<h2>Movie Title</h2>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere totam facilis, eveniet praesentium rem dolorum! Mollitia fugiat ab qui sequi accusantium eveniet iste eum possimus, quod modi quos
-					voluptatibus pariatur.
-				</p>
-				<button>add</button>
-			</article>
 		</main>
 		<script src="dist/js/add2home.js"></script>
-		<script src="dist/js/hammer.min.js"></script>
+		<script src="dist/js/jquery.min.js"></script>
 		<script src="dist/js/app.js"></script>
 	</body>
 </html>

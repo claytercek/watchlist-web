@@ -13,7 +13,7 @@ header {
 	}
 
 	input {
-		background-color: rgba(1, 1, 1, 0.4);
+		background-color: $searchBG;
 		color: $headerText;
 		border: none;
 		height: 32px;
@@ -22,4 +22,39 @@ header {
 		padding: 0 1.3rem;
 		transform: translateY(-5px);
 	}
+	
 }
+
+.radio-group {
+	display: flex;
+	width: calc( 100% - 2rem);
+	border: solid 2px $searchBG;
+	margin: 16px;
+	border-radius: 30px;
+	overflow: hidden;
+	color: $headerText;
+	
+	input[type=radio] {
+		position: absolute;
+		visibility: hidden;
+		display: none;
+	}
+		
+	label {
+		flex-grow: 1;
+		display: inline-block;
+		cursor: pointer;
+		padding: 5px 20px;
+		text-align: center;
+	}
+		
+	input[type=radio]:checked + label{
+		background: $searchBG;
+	}
+		
+	label + input[type=radio] + label {
+		border-left: solid 1px $searchBG;
+	}
+}
+
+

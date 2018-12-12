@@ -342,7 +342,8 @@ body {
   height: 100%;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none; }
+  -webkit-touch-callout: none;
+  overflow-x: hidden; }
 
 .background {
   background-color: #232979;
@@ -362,8 +363,10 @@ main {
     $COMPONENTS
 \*------------------------------------*/
 article {
-  background-color: #fff;
   box-shadow: #04072e78 0 9px 28px -4px;
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
   height: 96px;
   overflow: hidden;
   margin-bottom: 16px;
@@ -407,11 +410,11 @@ article {
     transition: height 0.3s cubic-bezier(0.77, 0, 0.18, 1); }
     article.hasWatchData .watchData {
       grid-area: watchData;
+      overflow-x: scroll !important;
       display: flex; }
       article.hasWatchData .watchData a {
-        display: block;
-        flex: 1;
-        overflow: hidden;
+        overflow: visible;
+        display: inline-block;
         color: rgba(27, 27, 27, 0.8);
         text-decoration: none;
         text-align: center;
@@ -423,10 +426,12 @@ article {
           border-right: none; }
         article.hasWatchData .watchData a h3 {
           font-size: 0.75rem;
+          width: 100px;
           font-weight: 300;
-          margin: 0.3rem 0; }
+          margin: 0.3rem 0;
+          display: block; }
     article.hasWatchData.showData {
-      height: 172px; }
+      height: 180px; }
   article.hasAddButton {
     grid-template-columns: 66px auto 32px; }
     article.hasAddButton h2,
@@ -443,6 +448,40 @@ article {
       margin-right: 4px; }
       article.hasAddButton button:active {
         opacity: 0.5; }
+
+.animateOut article {
+  transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1), margin-bottom 0.3s 0.1s cubic-bezier(0.65, 0.05, 0.36, 1);
+  height: 0 !important;
+  box-shadow: none;
+  overflow: hidden;
+  margin-bottom: 0; }
+.animateOut .action {
+  transition: all 0.1s cubic-bezier(0.65, 0.05, 0.36, 1);
+  opacity: 0; }
+
+.item--withSwipe {
+  position: relative; }
+
+.action {
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  top: 0;
+  border: 0;
+  color: #FFF;
+  outline: none;
+  z-index: 0;
+  background-color: transparent; }
+  .action:first-child::before, .action:last-child::before {
+    position: absolute;
+    top: 0;
+    content: '';
+    width: 2000px;
+    height: 100%; }
+  .action:first-child {
+    left: 0px; }
+  .action:last-child {
+    right: 0px; }
 
 header {
   padding: 16px 16px 0 16px;
@@ -548,5 +587,28 @@ header input {
   border-radius: 24px;
   padding: 0 1.3rem;
   transform: translateY(-5px); }
+
+.radio-group {
+  display: flex;
+  width: calc( 100% - 2rem);
+  border: solid 2px rgba(1, 1, 1, 0.4);
+  margin: 16px;
+  border-radius: 30px;
+  overflow: hidden;
+  color: #ffffff; }
+  .radio-group input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none; }
+  .radio-group label {
+    flex-grow: 1;
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px 20px;
+    text-align: center; }
+  .radio-group input[type=radio]:checked + label {
+    background: rgba(1, 1, 1, 0.4); }
+  .radio-group label + input[type=radio] + label {
+    border-left: solid 1px rgba(1, 1, 1, 0.4); }
 
 /*# sourceMappingURL=main.css.map */
