@@ -20,7 +20,10 @@
 			$list.on('touchstart', settings.itemSelector, function (e) {
 				var $item = $(this);
 				$item.stop();
-				console.log(e.target)
+				if (e.target.classList.contains("noSwipe")) {
+					return;
+				}
+
 				// console.log(e.target.hasClass("noSwipe"))
 				if (settings.closeOnOpen) {
 					$list.find(settings.itemSelector).not($item).animate({
