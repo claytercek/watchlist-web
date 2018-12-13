@@ -39,14 +39,10 @@ function showData(event, selected) {
 	}
 }
 
-
-
-
 // API STUFF
 
 const main = $("main");
-var results = []
-
+var results = [];
 
 function updateInput() {
 	var input = $("#search").val();
@@ -56,43 +52,31 @@ function updateInput() {
 		return;
 	}
 
-	var type = $("input[type=radio]:checked").attr('id');
-	var url;
-	if (type == "movie") {
-		url = "https://api.themoviedb.org/3/search/movie?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1&include_adult=false&query=" + input
-	} else {
-		url = "https://api.themoviedb.org/3/search/tv?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1&query=" + input
-	}
+	var body = {
+		content_types: ["show", "movie"],
+		page: 1,
+		page_size: 10,
+		query: input
+	};
 
-	
-	$.ajax({
-		"async": true,
-		"crossDomain": true,
-		"url": url,
-		"type": "GET"
-	}).done( function(response) {
+	$.get("https://apis.justwatch.com/content/titles/en_US/popular?body=" + JSON.stringify(body), function(data, status) {
+		console.log(data);
+
 		main.html("");
-		results = response.results;
+		results = data.items;
 
-		$.each(response.results, function(index, data) {
-			let name = data.name != null ? data.name : data.title;
-
-
-			main.append( `
+		$.each(results, function(index, data) {
+			main.append(`
 			<article class="hasAddButton">
-				<div class="imgWrapper"><img src="https://image.tmdb.org/t/p/w92/${data.poster_path}" alt="poster" /></div>
-				<h2>${name}</h2>
+				<div class="imgWrapper"><img src="https://images.justwatch.com${data.poster.replace("{profile}", "s166")}" alt="poster" /></div>
+				<h2>${data.title}</h2>
 				<p>
-				${data.overview}
+				${data.short_description}
 				</p>
 				<button onclick="addToWatchlist(${index})">add</button>
-			</article>
-			`
-		)})
-
-	}).catch( function(error) {
-		console.error(error.responseText)
-	})
+			</article>`);
+		});
+	});
 }
 
 function getWatchlist() {
@@ -100,7 +84,7 @@ function getWatchlist() {
 	if (localStorage.getItem("watchlist") === null) {
 		return [];
 	}
-	var entries = localStorage.getItem('watchlist');
+	var entries = localStorage.getItem("watchlist");
 	// Convert string
 	var parsedEntries = JSON.parse(entries);
 	// Return the string
@@ -112,7 +96,7 @@ function getArchive() {
 	if (localStorage.getItem("archive") === null) {
 		return [];
 	}
-	var entries = localStorage.getItem('archive');
+	var entries = localStorage.getItem("archive");
 	// Convert string
 	var parsedEntries = JSON.parse(entries);
 	// Return the string
@@ -124,7 +108,7 @@ function getDeleted() {
 	if (localStorage.getItem("deleted") === null) {
 		return [];
 	}
-	var entries = localStorage.getItem('deleted');
+	var entries = localStorage.getItem("deleted");
 	// Convert string
 	var parsedEntries = JSON.parse(entries);
 	// Return the string
@@ -134,28 +118,44 @@ function getDeleted() {
 function addToWatchlist(index) {
 	var watchlist = this.getWatchlist();
 	var data = results[index];
-	var type = $("input[type=radio]:checked").attr('id');
 
 	itemData = {
-		imageUrl: "https://image.tmdb.org/t/p/w92/" +data.poster_path,
-		title: data.name != null ? data.name : data.title,
-		overview: data.overview,
+		imageUrl: `https://images.justwatch.com${data.poster.replace("{profile}", "s166")}`,
+		title: data.title,
+		overview: data.short_description,
 		id: data.id,
-		type : type
-	}
+		type: data.object_type,
+		offers: data.offers
+	};
 
 	watchlist.push(itemData);
 	newUpdatedEntries = JSON.stringify(watchlist);
-	localStorage.setItem('watchlist', newUpdatedEntries);
-	return location.href = 'index.html';
+	localStorage.setItem("watchlist", newUpdatedEntries);
+	return (location.href = "index.html");
+}
 
+var providers = [8, 9, 15, 10, 27, 192, 3, 2, 37];
+var providerObj = {
+	8: "netflix",
+	 9: "prime",
+	 15: "hulu",
+	 10: "amazon",
+	 27: "hbo",
+	 192: "youtube",
+	 3: "google",
+	 2: "apple",
+	 37: "showtime"
 }
 
 function loadWatchlist() {
 	main.listSwipe();
 	watchlist = getWatchlist();
 
-	console.log("loading watchlist")
+	console.log(watchlist[0]);
+
+	$.get("https://apis.justwatch.com/content/titles/movie/171064/locale/en_US", function(data, status) {
+		console.log(data);
+	});
 
 	$.each(watchlist, function(index, data) {
 		main.append(`
@@ -167,29 +167,50 @@ function loadWatchlist() {
 				<p>
 				${data.overview}
 				</p>
-				<section class="watchData noSwipe" >
-					<a href="#" class="noSwipe">
-						<img class="noSwipe" src="https://via.placeholder.com/30x30" alt="Logo" />
-						<h3 class="noSwipe">subscription</h3>
-					</a>
-					<a href="#" class="noSwipe">
-						<img class="noSwipe" src="https://via.placeholder.com/30x30" alt="Logo" />
-						<h3 class="noSwipe">subscription</h3>
-					</a>
-					<a href="#" class="noSwipe">
-						<img class="noSwipe" src="https://via.placeholder.com/30x30" alt="Logo" />
-						<h3 class="noSwipe">from $2.99</h3>
-					</a>
-					<a href="#" class="noSwipe">
-						<img class="noSwipe" src="https://via.placeholder.com/30x30" alt="Logo" />
-						<h3 class="noSwipe">from $2.99</h3>
-					</a>
+				<section class="watchData noSwipe">
 				</section>
 			</article>
 			<button class="action" onclick="deleteWatchItem(${index})" >delete</button>
 		</div>
-		`)
-	})
+		`);
+
+
+		links = {};
+
+		$.each(data.offers, function(index, offer) {
+
+			if (!providers.includes(offer.provider_id)) {
+				return;
+			}
+
+			if (links[offer.provider_id]) {
+				if (links[offer.provider_id].price < offer.retail_price) {
+					return;
+				}
+			} 
+
+			let price = (offer.monetization_type == "flatrate") ? "subscription" : "from $" + offer.retail_price;
+			let href = (offer.urls.deeplink_ios) ? offer.urls.deeplink_ios : offer.urls.standard_web;
+			
+			links[offer.provider_id] = {
+				href: href,
+				id: offer.provider_id, //to change
+				price: price
+			}
+			console.log(links)
+
+		});
+			
+		$.each(links, function(index, link) {
+			$(`.watchItem[data-title='${data.title}'] section.watchData`).append(`
+				<a href="${link.href}" class="noSwipe">
+					<img class="noSwipe" src="dist/img/logos/${providerObj[link.id]}.svg" alt="Logo" />
+					<h3 class="noSwipe price">${link.price}</h3>
+				</a>
+			`);
+		})
+
+	});
 }
 
 function archiveWatchItem(index) {
@@ -200,10 +221,10 @@ function archiveWatchItem(index) {
 	archive.push(itemData[0]);
 
 	newUpdatedWatchlist = JSON.stringify(watchlist);
-	localStorage.setItem('watchlist', newUpdatedWatchlist);
+	localStorage.setItem("watchlist", newUpdatedWatchlist);
 
 	newUpdatedArchive = JSON.stringify(archive);
-	localStorage.setItem('archive', newUpdatedArchive);
+	localStorage.setItem("archive", newUpdatedArchive);
 	element = $(".watchItem[data-title='" + itemData[0].title + "']");
 	element[0].classList.add("animateOut");
 }
@@ -216,10 +237,10 @@ function deleteWatchItem(index) {
 	deleted.push(itemData[0]);
 
 	newUpdatedWatchlist = JSON.stringify(watchlist);
-	localStorage.setItem('watchlist', newUpdatedWatchlist);
+	localStorage.setItem("watchlist", newUpdatedWatchlist);
 
 	newUpdatedDeleted = JSON.stringify(deleted);
-	localStorage.setItem('deleted', newUpdatedDeleted);
+	localStorage.setItem("deleted", newUpdatedDeleted);
 	element = $(".watchItem[data-title='" + itemData[0].title + "']");
 	element[0].classList.add("animateOut");
 }
@@ -232,10 +253,10 @@ function deleteArchiveItem(index) {
 	deleted.push(itemData[0]);
 
 	newUpdatedArchive = JSON.stringify(archive);
-	localStorage.setItem('archive', newUpdatedArchive);
+	localStorage.setItem("archive", newUpdatedArchive);
 
 	newUpdatedDeleted = JSON.stringify(deleted);
-	localStorage.setItem('deleted', newUpdatedDeleted);
+	localStorage.setItem("deleted", newUpdatedDeleted);
 	element = $(".watchItem[data-title='" + itemData[0].title + "']");
 	element[0].classList.add("animateOut");
 }
@@ -246,8 +267,7 @@ function loadArchive() {
 	});
 	archive = getArchive();
 	$.each(archive, function(index, data) {
-
-		main.append( `
+		main.append(`
 		<div class="item--withSwipe watchItem" data-title="${data.title}">
 			<article>
 				<div class="imgWrapper"><img src="${data.imageUrl}" alt="poster" /></div>
@@ -258,8 +278,8 @@ function loadArchive() {
 			</article>
 			<button class="action" onclick="deleteArchiveItem(${index})" >delete</button>
 		</div>
-		`
-	)})
+		`);
+	});
 }
 
 function loadRecommended() {
@@ -271,39 +291,39 @@ function loadRecommended() {
 	var nameArray = [];
 	$.each($.merge(archive, watchlist, deleted), function(index, data) {
 		nameArray.push(data.title);
-	})
+	});
 
 	console.log(nameArray);
 
 	$.each($.merge(archive, watchlist), function(index, data) {
-		var url; 
+		var url;
 
 		if (data.type == "tv") {
-			url = "https://api.themoviedb.org/3/movie/" + data.id  +"/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
+			url = "https://api.themoviedb.org/3/movie/" + data.id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1";
 		} else {
-			url = "https://api.themoviedb.org/3/movie/" + data.id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
+			url = "https://api.themoviedb.org/3/movie/" + data.id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1";
 		}
-		console.log(data.type)
+		console.log(data.type);
 
 		$.ajax({
-			"async": true,
-			"crossDomain": true,
-			"url": url,
-			"type": "GET"
-		}).done( function(response) {
-	
-			results = response.results;
-	
-			$.each(results, function(index, data) {
-				let name = data.name != null ? data.name : data.title;
+			async: true,
+			crossDomain: true,
+			url: url,
+			type: "GET"
+		})
+			.done(function(response) {
+				results = response.results;
 
-				if(jQuery.inArray(name, nameArray) !== -1) {
-					return true; //continue
-				} else {
-					nameArray.push(name)
-				}
-	
-				main.append( `
+				$.each(results, function(index, data) {
+					let name = data.name != null ? data.name : data.title;
+
+					if (jQuery.inArray(name, nameArray) !== -1) {
+						return true; //continue
+					} else {
+						nameArray.push(name);
+					}
+
+					main.append(`
 				<article class="hasAddButton">
 					<div class="imgWrapper"><img src="https://image.tmdb.org/t/p/w92/${data.poster_path}" alt="poster" /></div>
 					<h2>${name}</h2>
@@ -312,13 +332,12 @@ function loadRecommended() {
 					</p>
 					<button onclick="addToWatchlist(${index})">add</button>
 				</article>
-				`
-				)
-				return false; //break
+				`);
+					return false; //break
+				});
 			})
-
-		}).catch( function(error) {
-			console.error(error.responseText)
-		})
+			.catch(function(error) {
+				console.error(error.responseText);
+			});
 	});
 }
