@@ -1,12 +1,4 @@
-function onUpdateReady() {
-	console.log('found new version!');
-	window.applicationCache.update()
-}
-window.applicationCache.addEventListener('updateready', onUpdateReady);
 
-if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-	onUpdateReady();
-}
 
 function routeTo(pathToPage) {
 	location.href = pathToPage;
@@ -148,8 +140,10 @@ function addToWatchlist(index) {
 		imageUrl: "https://image.tmdb.org/t/p/w92/" +data.poster_path,
 		title: data.name != null ? data.name : data.title,
 		overview: data.overview,
-		id: data.id,
-		type : type
+		movie_id: data.id,
+		type : type,
+		id: Math.floor(100000 + Math.random() * 900000)
+		
 	}
 
 	watchlist.push(itemData);
@@ -160,6 +154,9 @@ function addToWatchlist(index) {
 }
 
 function loadWatchlist() {
+
+	checkForAppUpdates();
+
 	main.listSwipe();
 	watchlist = getWatchlist();
 
@@ -167,8 +164,8 @@ function loadWatchlist() {
 
 	$.each(watchlist, function(index, data) {
 		main.append(`
-		<div class="item--withSwipe watchItem" data-title="${data.title}">
-			<button class="action" onclick="archiveWatchItem(${index})">complete</button>
+		<div class="item--withSwipe watchItem" data-title="${data.title}" data-id="${data.id}">
+			<button class="action" onclick="archiveWatchItem(${data.id})">complete</button>
 			<article onclick="showData(event, this)">
 				<div class="imgWrapper">${ (data.imageUrl) ? "<img src='" +data.imageUrl + "' />" : "" }</div>
 				<h2>${data.title}</h2>
@@ -176,18 +173,24 @@ function loadWatchlist() {
 				${data.overview}
 				</p>
 			</article>
-			<button class="action" onclick="deleteWatchItem(${index})" >delete</button>
+			<button class="action" onclick="deleteWatchItem(${data.id})" >delete</button>
 		</div>
 		`)
 	})
 }
 
-function archiveWatchItem(index) {
-	archive = getArchive();
-	watchlist = getWatchlist();
+function archiveWatchItem(id) {
+	let archive = getArchive();
+	let watchlist = getWatchlist();
+
+	var index = watchlist.findIndex(function(item) {
+		console.log(item.id == id, item.id, id)
+		return item.id == id;
+	})
+
+	console.log(index);
 
 	itemData = watchlist.splice(index, 1);
-	console.log(itemData)
 	archive.push(itemData[0]);
 
 	newUpdatedWatchlist = JSON.stringify(watchlist);
@@ -195,13 +198,15 @@ function archiveWatchItem(index) {
 
 	newUpdatedArchive = JSON.stringify(archive);
 	localStorage.setItem('archive', newUpdatedArchive);
-	element = $(".watchItem[data-title='" + itemData[0].title + "']");
+	element = $(".watchItem[data-id='" + id + "']");
 	element[0].classList.add("animateOut");
 }
 
-function deleteWatchItem(index) {
-	deleted = getDeleted();
-	watchlist = getWatchlist();
+function deleteWatchItem(id) {
+	let deleted = getDeleted();
+	let watchlist = getWatchlist();
+
+	let index = watchlist.findIndex(x => x.id === id);
 
 	itemData = watchlist.splice(index, 1);
 	deleted.push(itemData[0]);
@@ -211,13 +216,15 @@ function deleteWatchItem(index) {
 
 	newUpdatedDeleted = JSON.stringify(deleted);
 	localStorage.setItem('deleted', newUpdatedDeleted);
-	element = $(".watchItem[data-title='" + itemData[0].title + "']");
+	element = $(".watchItem[data-id='" + id + "']");
 	element[0].classList.add("animateOut");
 }
 
-function deleteArchiveItem(index) {
-	deleted = getDeleted();
-	archive = getArchive();
+function deleteArchiveItem(id) {
+	let deleted = getDeleted();
+	let archive = getArchive();
+
+	let index = archive.findIndex(x => x.id === id);
 
 	itemData = archive.splice(index, 1);
 	deleted.push(itemData[0]);
@@ -227,7 +234,7 @@ function deleteArchiveItem(index) {
 
 	newUpdatedDeleted = JSON.stringify(deleted);
 	localStorage.setItem('deleted', newUpdatedDeleted);
-	element = $(".watchItem[data-title='" + itemData[0].title + "']");
+	element = $(".watchItem[data-id='" + id+ "']");
 	element[0].classList.add("animateOut");
 }
 
@@ -239,7 +246,7 @@ function loadArchive() {
 	$.each(archive, function(index, data) {
 
 		main.append( `
-		<div class="item--withSwipe watchItem" data-title="${data.title}">
+		<div class="item--withSwipe watchItem" data-title="${data.title}" data-id="${data.id}">
 			<article>
 				<div class="imgWrapper">${ (data.imageUrl) ? "<img src='" +data.imageUrl + "' />" : "" }</div>
 				<h2>${data.title}</h2>
@@ -247,7 +254,7 @@ function loadArchive() {
 				${data.overview}
 				</p>
 			</article>
-			<button class="action" onclick="deleteArchiveItem(${index})" >delete</button>
+			<button class="action" onclick="deleteArchiveItem(${data.id})" >delete</button>
 		</div>
 		`
 	)})
@@ -268,9 +275,9 @@ function loadRecommended() {
 		var url; 
 
 		if (data.type == "tv") {
-			url = "https://api.themoviedb.org/3/movie/" + data.id  +"/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
+			url = "https://api.themoviedb.org/3/movie/" + data.movie_id  +"/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
 		} else {
-			url = "https://api.themoviedb.org/3/movie/" + data.id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
+			url = "https://api.themoviedb.org/3/movie/" + data.movie_id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
 		}
 
 		$.ajax({
