@@ -275,7 +275,7 @@ function loadRecommended() {
 		var url; 
 
 		if (data.type == "tv") {
-			url = "https://api.themoviedb.org/3/movie/" + data.movie_id  +"/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
+			url = "https://api.themoviedb.org/3/tv/" + data.movie_id  +"/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
 		} else {
 			url = "https://api.themoviedb.org/3/movie/" + data.movie_id + "/recommendations?api_key=0fa1071a92f1c0ec8136cf4446839afc&language=en-US&page=1"
 		}
