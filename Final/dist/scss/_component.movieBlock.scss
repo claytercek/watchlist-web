@@ -159,13 +159,7 @@ article {
 	z-index: 0;
 	background-color: transparent;
 
-	&:first-child::before,&:last-child::before {
-		position: absolute;
-		top: 0;
-		content: '';
-		width: 2000px;
-		height: 100%;
-	}
+	
 	&:first-child { left: 0px; }
 	&:last-child { right: 0px; }
 }

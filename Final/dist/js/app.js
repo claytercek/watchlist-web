@@ -166,7 +166,7 @@ function loadWatchlist() {
 		main.append(`
 		<div class="item--withSwipe watchItem" data-title="${data.title}" data-id="${data.id}">
 			<button class="action" onclick="archiveWatchItem(${data.id})">complete</button>
-			<article onclick="showData(event, this)">
+			<article>
 				<div class="imgWrapper">${ (data.imageUrl) ? "<img src='" +data.imageUrl + "' />" : "" }</div>
 				<h2>${data.title}</h2>
 				<p>
