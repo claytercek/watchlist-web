@@ -7,6 +7,7 @@ CACHE:
 index.html
 add.html
 archive.html
+recommended.html
 
 # CSS
 dist/css/normalize.css
@@ -51,7 +52,7 @@ dist/img/icon/icon_76pt@2x.png
 dist/img/icon/icon_60pt@2x.png
 dist/img/icon/icon_60pt@3x.png
 
-dist/img/icon/icon_83.5pt@2x.png
+dist/img/icon/icon_83.5@2x.png
 
 dist/img/splashscreens/ipad_splash.png
 dist/img/splashscreens/ipadpro1_splash.png
