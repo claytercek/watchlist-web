@@ -1,3 +1,13 @@
+function onUpdateReady() {
+	console.log('found new version!');
+	window.applicationCache.update()
+}
+window.applicationCache.addEventListener('updateready', onUpdateReady);
+
+if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+	onUpdateReady();
+}
+
 function routeTo(pathToPage) {
 	location.href = pathToPage;
 }
@@ -189,7 +199,7 @@ function loadWatchlist() {
 				}
 			} 
 
-			let price = (offer.monetization_type == "flatrate") ? "subscription" : "from $" + offer.retail_price;
+			let price = (offer.monetization_type == "flatrate") ? 0 : offer.retail_price;
 			let href = (offer.urls.deeplink_ios) ? offer.urls.deeplink_ios : offer.urls.standard_web;
 			
 			links[offer.provider_id] = {
@@ -202,10 +212,12 @@ function loadWatchlist() {
 		});
 			
 		$.each(links, function(index, link) {
+			let price = (link.price == 0) ? "subscription" : "from $" + link.price;
+
 			$(`.watchItem[data-title='${data.title}'] section.watchData`).append(`
 				<a href="${link.href}" class="noSwipe">
 					<img class="noSwipe" src="dist/img/logos/${providerObj[link.id]}.svg" alt="Logo" />
-					<h3 class="noSwipe price">${link.price}</h3>
+					<h3 class="noSwipe price">${price}</h3>
 				</a>
 			`);
 		})

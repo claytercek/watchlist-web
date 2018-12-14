@@ -1,0 +1,73 @@
+CACHE MANIFEST
+# 12-13-2018: v1.0
+
+CACHE:
+
+# HTML FILES
+index.html
+add.html
+archive.html
+
+# CSS
+dist/css/normalize.css
+dist/css/add2home.css
+dist/css/main.css
+
+# JAVASCRIPT - SPECIFIC ORDER
+dist/js/jquery.min.js
+dist/js/jquery-listswipe.js
+dist/js/add2home.js
+dist/js/app.js
+
+# IMAGES
+dist/img/add-dark.svg
+dist/img/add.svg
+dist/img/arrow.svg
+
+dist/img/logos/amazon.svg
+dist/img/logos/apple.svg
+dist/img/logos/google.svg
+dist/img/logos/hbo.svg
+dist/img/logos/hulu.svg
+dist/img/logos/netflix.svg
+dist/img/logos/prime.svg
+dist/img/logos/showtime.svg
+dist/img/logos/youtube.svg
+
+dist/img/icon/icon_20pt.png
+dist/img/icon/icon_20pt@2x.png
+dist/img/icon/icon_20pt@3x.png
+
+dist/img/icon/icon_29pt.png
+dist/img/icon/icon_29pt@2x.png
+dist/img/icon/icon_29pt@3x.png
+
+dist/img/icon/icon_40pt.png
+dist/img/icon/icon_40pt@2x.png
+dist/img/icon/icon_40pt@3x.png
+
+dist/img/icon/icon_76pt.png
+dist/img/icon/icon_76pt@2x.png
+dist/img/icon/icon_60pt@2x.png
+dist/img/icon/icon_60pt@3x.png
+
+dist/img/icon/icon_83.5pt@2x.png
+
+dist/img/splashscreens/ipad_splash.png
+dist/img/splashscreens/ipadpro1_splash.png
+dist/img/splashscreens/ipadpro2_splash.png
+dist/img/splashscreens/ipadpro3_splash.png
+dist/img/splashscreens/iphone5_splash.png
+dist/img/splashscreens/iphone6_splash.png
+dist/img/splashscreens/iphoneplus_splash.png
+dist/img/splashscreens/iphonex_splash.png
+dist/img/splashscreens/iphonexr_splash.png
+dist/img/splashscreens/iphonexsmax_splash.png
+
+# FONTS
+dist/fonts/Avenir-Heavy.woff
+dist/fonts/Avenir-Heavy.woff2
+dist/fonts/Avenir-Light.woff
+dist/fonts/Avenir-Light.woff2
+dist/fonts/Avenir-Medium.woff
+dist/fonts/Avenir-Medium.woff2

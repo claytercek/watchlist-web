@@ -63,7 +63,9 @@ article {
 		.watchData {
 			grid-area: watchData;
 			overflow-x: scroll !important;
+			overflow-y: hidden;
 			display: flex;
+			border-top: 1px solid #f8f5f544;
 			
 			a {
 				overflow: visible;
@@ -73,16 +75,15 @@ article {
 				text-align: center;
 				margin-top: 4px;
 				padding-top: 10px;
-				border-top: 1px solid #d8d8d844;
 				border-right: 1px solid #d8d8d844;
 
 				&:last-of-type {
 					border-right: none;
 				}
 
+				height: 30px;
 				img {
 					width: 40px;
-					height: 30px;
 				}
 
 				h3 {
